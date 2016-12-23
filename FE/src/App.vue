@@ -1,37 +1,43 @@
 <template>
-    <router-view></router-view>
-</template>
+  <div id="app">
+    <header class="navbar">
+      <h2 class="navbar-title">
+        <a class="anchor" data-track-action="navbar" data-track-label="logo" href="/">
+        <span class="sr-only">Cosiner</span>
+      </a>
+    </h2>
+      <div>
+        <ul class="navbar-list pull-right">
+          <li>
+            <a href="/photo-license/" title="Stock photo license">登录</a>
+          </li>
+          <li>
+            <a href="/photo-license/" title="Stock photo license">注册</a>
+          </li>
+          <li>
+            <a href="/photo-license/" title="Stock photo license" >License</a>
+          </li>
+        </ul>
 
-<style>
-  body {
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Microsoft Yahei","WenQuanYi Micro Hei",Arial,Verdana,sans-serif;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #333;
-    background-color: #fff;
-  }
-</style>
+      </div>
+    </header>
+    <router-view></router-view>
+    <footer class="bs-footer">
+      <div class="container">
+        <img src="./assets/gdut.png" style="width:25px">
+        <p>广东工业大学</p>
+      </div>
+    </footer>
+  </div>
+</template>
 <script>
-  import store from './vuex/store';
-  import { tokenLogin } from './vuex/actions';
-  import AuthService from './api/AuthService';
-  export default {
-    store,
-    vuex: {
-      actions: {
-        tokenLogin,
-      },
-    },
-    created() {
-      // 在应用第一次加载的时候，尝试读取本地的cookie 以及 localStorage 进行权限验证获取token
-      AuthService.fetchToken()
-        .then((res) => {
-          console.log('fetchToken');
-          console.log(res);
-          this.tokenLogin(res);
-        }, (err) => {
-          console.log(err);
-        });
-    },
-  };
+export default {
+  name: 'app',
+};
 </script>
+<style lang="less">
+  @import "./styles/reset.less";
+  @import "./styles/base.less";
+  @import "./styles/navbar.less";
+  @import "./styles/flex.less";
+</style>
