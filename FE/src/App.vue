@@ -18,13 +18,11 @@
             <a href="/photo-license/" title="Stock photo license" >License</a>
           </li>
         </ul>
-
       </div>
     </header>
     <router-view></router-view>
     <footer class="bs-footer">
       <div class="container">
-        <img src="./assets/gdut.png" style="width:25px">
         <p>广东工业大学</p>
       </div>
     </footer>
@@ -36,8 +34,9 @@ export default {
 };
 </script>
 <style lang="less">
-  @import "./styles/reset.less";
+  //@import "./styles/flex.less";
+  @import "~bootstrap/less/bootstrap.less";
+  // @import "./styles/reset.less";
   @import "./styles/base.less";
   @import "./styles/navbar.less";
-  @import "./styles/flex.less";
 </style>

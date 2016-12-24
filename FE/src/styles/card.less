@@ -1,14 +1,47 @@
 .card {
   position: relative;
-  display: block;
   margin-bottom: .75rem;
   background-color: #fff;
   border-radius: .25rem;
   border: 1px solid rgba(0,0,0,.125);
+  b {
+    background: #ddd;
+    margin-top: 4px;
+    display: inline-block;
+    width: 20%;
+    height: 1px;
+    _overflow: hidden;
+    vertical-align: middle;
+  }
   .card-block {
-    padding: 1.25rem;
+    padding: 2.75rem;
+  }
+  .card-text {
+    padding-left: 0.25rem;
+    color: #4b4b4b;
+    font-weight: normal;
+  }
+  .card-subtitle {
+    padding-bottom: 0.25rem;
+    color: #2f2a2a;
   }
   .card-title {
-    margin-bottom: .75rem;
+    padding-bottom: 1rem;
+    span {
+      display: inline-block;
+      width: 60%;
+      color: #2f2a2a;
+      font-weight: bold;
+      vertical-align: middle;
+      text-align: center;
+    }
+  }
+  .card-action {
+    margin-top: 1.5rem;
+    width: 100%;
+    .card-btn {
+      display: block;
+      margin: 0 auto;
+    }
   }
 }

@@ -55,3 +55,30 @@
 - 类型：get
 - 参数：null
 - 返回值：{ success, msg }
+
+
+# models 
+#### user
+- id 
+- name
+- password
+- role
+#### job
+- id
+- user_id
+- name
+- status
+- date
+- job_detail
+- job_url
+#### jobDetail
+- name
+- courseName
+- introdution
+- requirement
+- deadTime
+# todolist工作日程安排
+
+- 登录弹窗
+- 注册页面
+
