@@ -1,33 +1,42 @@
 package cn.cosine.models;
 
 public class JobDetail {
-	private String name;
+	private String jobName;
 	private String courseName;
+	private String courseClass;
 	private String introdution;
 	private String requirement;
 	private String deadTime;
-	public JobDetail(String name, String courseName, String introdution, String requirement, String deadTime) {
+	public JobDetail() {
+		
+	}
+	public JobDetail(String jobName, String courseName, String courseClass, String introdution, String requirement,
+			String deadTime) {
 		super();
-		this.name = name;
+		this.jobName = jobName;
 		this.courseName = courseName;
+		this.courseClass = courseClass;
 		this.introdution = introdution;
 		this.requirement = requirement;
 		this.deadTime = deadTime;
 	}
-	public JobDetail() {
-		super();
+	public String getjobName() {
+		return jobName;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
 	}
 	public String getCourseName() {
 		return courseName;
 	}
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+	public String getCourseClass() {
+		return courseClass;
+	}
+	public void setCourseClass(String courseClass) {
+		this.courseClass = courseClass;
 	}
 	public String getIntrodution() {
 		return introdution;
@@ -46,6 +55,7 @@ public class JobDetail {
 	}
 	public void setDeadTime(String deadTime) {
 		this.deadTime = deadTime;
-	}	
+	}
 
+	
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBConnection {
+	// 考虑封装 数据库连接池代理
 	private static final String DBDRIVER = "";
 	private static final String DBURL = "";
 	private static final String DBUSER = "";

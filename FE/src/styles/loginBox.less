@@ -1,32 +1,44 @@
-.hand{
-  cursor:pointer;
-}
-.action-group{
-  margin-top: 30px;
-}
-.action-group button{
-  height: 40px;
-}
-.auth-modal-inner{
+.auth-modal{
+  width: 350px;
+  padding: 20px;
+  margin-top: 10px;
   font-size: 14px;
   background-color: #fff;
   border: 1px solid #d8dee2;
   border-radius: 5px;
 }
-.auth-modal{
-  width: 350px;
-  padding: 20px;
-  margin-top: 10px;
-}
-.logo {
+.logoBox {
   padding: 100px 0px;
-  width:150px;
-  height:150px;
+  width:120px;
+  height:120px;
+  img {
+    width:120px;
+    margin: 0 auto;
+  }
 }
-.create-account-callout {
+.create-account {
   margin-top: 15px;
   padding: 15px 20px;
   text-align: center;
   border: 1px solid #d8dee2;
   border-radius: 5px;
+}
+.loginBox {
+  z-index: 30;
+  position: absolute;
+  left: 50%;
+  margin-left: -175px;
+}
+.modal-back {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+  z-index: 20;
+  opacity: .5;
+  background-color: #000;
+  filter: alpha(opacity=75);
+  background-size: cover;
 }
