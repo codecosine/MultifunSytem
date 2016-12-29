@@ -1,5 +1,6 @@
 package cn.cosine.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import cn.cosine.dao.JobDetailDaoImpl;
@@ -14,30 +15,43 @@ public class UserService {
 		userdao = UserDaoImpl.getInstance();
 		jobdetaildao = JobDetailDaoImpl.getInstance();
 	}
-	public boolean authUser(User user) throws Exception {
-		User findUser = userdao.findById(user.getId()).get(0);
-		if (findUser.getId() != null) {
-			if (findUser.getPassword().equals(user.getPassword())) {
-				return true;
-			}
+	public boolean authUser(User user) {
+		User findUser = null;
+		try {
+			findUser = userdao.findByUserName(user.getUsername()).get(0);
+			return findUser.equals(user);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		
 		return false;
 	}
-	public boolean resetPassword(User user,String resetPass) throws Exception {
+	public boolean resetPassword(User user,String resetPass) {
 		User reset = new User();
-		if (this.authUser(user)) {
-			reset.setId(user.getId());
-			reset.setName(user.getName());
-			reset.setPassword(resetPass);
-			reset.setRole(user.getRole());
-			return userdao.updateUser(reset);
-		} else {
-			reset = null;
-			return false;
+		try {
+			if (this.authUser(user)) {
+				reset.setId(user.getId());
+				reset.setUsername(user.getUsername());
+				reset.setPassword(resetPass);
+				reset.setRole(user.getRole());
+				return userdao.updateUser(reset);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		reset = null;
+		return false;
+		
 	}
 	public List<JobDetail> getJobs(){
-		return jobdetaildao.findAll();
+		try {
+			return jobdetaildao.findAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 

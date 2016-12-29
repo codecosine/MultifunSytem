@@ -3,8 +3,8 @@
     <div class="logoBox center-block"><img src="../assets/gdut.png"></div>
       <form role="form" class="center-block auth-modal">
           <div class="form-group">
-            <label for="id">学号</label>
-            <input id="id" type="text" v-model="user.id" class="form-control" placeholder="登录学号">
+            <label for="username">学号</label>
+            <input id="username" type="text" v-model="user.username" class="form-control" placeholder="登录学号">
           </div>
           <div class="form-group">
             <label for="password">密码</label>
@@ -36,21 +36,24 @@
       methods: {
         /* eslint no-undef: "error" */
         /* eslint-env browser */
+        // signIn() {
+        //   this.$store.dispatch('signInRequest', this.user)
+        //     .then((res) => {
+        //       if (res.data.success) {
+        //         const auth = {
+        //           username: res.data.username,
+        //           token: res.data.token,
+        //         };
+        //         this.$store.dispatch('signInSuccess', auth);
+        //         window.localStorage.setItem('TOKEN_KEY', res.data.token);
+        //         this.$router.push({ name: 'main' });
+        //       }  // 传递 res.message
+        //     }, (err) => {
+        //       this.$store.dispatch('signInError', err);
+        //     });
+        // },
         signIn() {
-          this.$store.dispatch('signInRequest', this.user)
-            .then((res) => {
-              if (res.data.success) {
-                const auth = {
-                  username: res.data.username,
-                  token: res.data.token,
-                };
-                this.$store.dispatch('signInSuccess', auth);
-                window.localStorage.setItem('TOKEN_KEY', res.data.token);
-                this.$router.push({ name: 'main' });
-              }  // 传递 res.message
-            }, (err) => {
-              this.$store.dispatch('signInError', err);
-            });
+          this.$http.post('/MultifunSystemServer/UserAuth', this.user);
         },
       },
     };

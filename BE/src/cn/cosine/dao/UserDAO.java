@@ -7,8 +7,8 @@ import cn.cosine.models.User;
 
 public interface UserDAO {
     List<User> findAll() throws Exception;
-    List<User> findById(String id) throws SQLException;
-    List<User> findByName(String name) throws SQLException;
+    List<User> findByUserName(String username) throws SQLException;
+    List<User> findById(int id) throws SQLException;
     boolean insertUser(User user) throws SQLException;
     boolean updateUser(User user) throws SQLException;
     boolean deleteUser(User user) throws SQLException;

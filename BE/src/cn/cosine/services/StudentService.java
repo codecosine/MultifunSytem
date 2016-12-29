@@ -1,5 +1,6 @@
 package cn.cosine.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import cn.cosine.dao.JobDaoImpl;
@@ -11,9 +12,21 @@ public class StudentService {
 		jobdao = JobDaoImpl.getInstance();
 	}
 	public List<Job> getUserJobs(String userId) {
-		return jobdao.findById(userId);
+		try {
+			return jobdao.findByUserId(userId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	public boolean submitJob(Job update){
-		return jobdao.updateJob(update);
+		try {
+			return jobdao.updateJob(update);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

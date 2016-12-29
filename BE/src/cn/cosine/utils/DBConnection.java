@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 	// 考虑封装 数据库连接池代理
-	private static final String DBDRIVER = "";
-	private static final String DBURL = "";
-	private static final String DBUSER = "";
-	private static final String DBPASSWORD = "";
+	private static final String DBDRIVER = "com.mysql.jdbc.Driver";
+	private static final String DBURL = "jdbc:mysql://localhost:3306/cosine";
+	private static final String DBUSER = "root";
+	private static final String DBPASSWORD = "cosine";
 	private Connection conn = null;
 	public DBConnection() throws Exception {
 		try {

@@ -16,7 +16,6 @@ public class UserDaoImpl implements UserDAO {
 	private PreparedStatement pstmt = null;
 	private UserDaoImpl() throws Exception{
 		conn = new DBConnection().getConnection();
-		
 	}
 	public static UserDaoImpl getInstance() {
 		if (instance == null){
@@ -31,55 +30,54 @@ public class UserDaoImpl implements UserDAO {
 	@Override
 	public List<User> findAll() throws SQLException{
 		List<User> result = new ArrayList<User>();
-		String sql = "SELECT id,name,password,role FROM User";
+		String sql = "SELECT id,username,password,role FROM User";
 		this.pstmt = this.conn.prepareStatement(sql);
 		ResultSet rs = this.pstmt.executeQuery();
 		User temp = null;
 		while (rs.next()) {
-			temp = new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
+			temp = new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
+			result.add(temp);
+		}
+		return result;
+	}
+	@Override
+	public List<User> findById(int id) throws SQLException {
+		List<User> result = new ArrayList<User>();
+		String sql = "SELECT id,username,password,role FROM User WHERE id=?";
+		this.pstmt = this.conn.prepareStatement(sql);
+		this.pstmt.setInt(1, id);
+		ResultSet rs = this.pstmt.executeQuery();
+		User temp = null;
+		while (rs.next()) {
+			temp = new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
 			result.add(temp);
 		}
 		return result;
 	}
 
 	@Override
-	public List<User> findById(String id) throws SQLException {
+	public List<User> findByUserName(String username) throws SQLException {
 		List<User> result = new ArrayList<User>();
-		String sql = "SELECT id,name,password,role FROM User WHERE id=?";
-		this.pstmt.setString(1, id);
+		String sql = "SELECT id,username,password,role FROM User WHERE username=?";
 		this.pstmt = this.conn.prepareStatement(sql);
+		this.pstmt.setString(1, username);
 		ResultSet rs = this.pstmt.executeQuery();
 		User temp = null;
 		while (rs.next()) {
-			temp = new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
+			temp = new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
 			result.add(temp);
 		}
 		return result;
 	}
 
-	@Override
-	public List<User> findByName(String name) throws SQLException {
-		List<User> result = new ArrayList<User>();
-		String sql = "SELECT id,name,password,role FROM User WHERE name=?";
-		this.pstmt = this.conn.prepareStatement(sql);
-		this.pstmt.setString(1, name);
-		ResultSet rs = this.pstmt.executeQuery();
-		User temp = null;
-		while (rs.next()) {
-			temp = new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
-			result.add(temp);
-		}
-		return result;
-	}
 
 	@Override
 	public boolean insertUser(User user) throws SQLException {
-		String sql = "INSERT INTO User(id,name,password,role) VALUES(?,?,?,?)";
+		String sql = "INSERT INTO User(username,password,role) VALUES(?,?,?)";
 		this.pstmt = this.conn.prepareStatement(sql);
-		this.pstmt.setString(1, user.getId());
-		this.pstmt.setString(2, user.getName());
-		this.pstmt.setString(3, user.getPassword());
-		this.pstmt.setString(4, user.getRole());
+		this.pstmt.setString(1, user.getUsername());
+		this.pstmt.setString(2, user.getPassword());
+		this.pstmt.setString(3, user.getRole());
 		if (this.pstmt.executeUpdate()>0) {
 			this.pstmt.close();
 			return true;
@@ -90,12 +88,12 @@ public class UserDaoImpl implements UserDAO {
 
 	@Override
 	public boolean updateUser(User user) throws SQLException {
-		String sql = "UPDATE User SET name=?,password=?,role=? WHERE id=?";
+		String sql = "UPDATE User SET username=?,password=?,role=? WHERE id=?";
 		this.pstmt = this.conn.prepareStatement(sql);
-		this.pstmt.setString(1, user.getName());
+		this.pstmt.setString(1, user.getUsername());
 		this.pstmt.setString(2, user.getPassword());
 		this.pstmt.setString(3, user.getRole());
-		this.pstmt.setString(4, user.getId());
+		this.pstmt.setInt(4, user.getId());
 		if (this.pstmt.executeUpdate()>0) {
 			this.pstmt.close();
 			return true;
@@ -108,7 +106,7 @@ public class UserDaoImpl implements UserDAO {
 	public boolean deleteUser(User user) throws SQLException {
 		String sql = "DELETE FROM User WHERE id=?";
 		this.pstmt = this.conn.prepareStatement(sql);
-		this.pstmt.setString(1, user.getId());
+		this.pstmt.setInt(1, user.getId());
 		if (this.pstmt.executeUpdate()>0) {
 			this.pstmt.close();
 			return true;
@@ -116,5 +114,5 @@ public class UserDaoImpl implements UserDAO {
 		this.pstmt.close();
 		return false;
 	}
-
+	
 }

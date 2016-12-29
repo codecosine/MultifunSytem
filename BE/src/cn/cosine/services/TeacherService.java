@@ -1,5 +1,6 @@
 package cn.cosine.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import cn.cosine.dao.JobDaoImpl;
@@ -15,16 +16,40 @@ public class TeacherService {
 		jobdao = JobDaoImpl.getInstance();
 	}
 	public boolean addJobDetail(JobDetail add) {
-		return jobdetaildao.insertJobDetail(add);
+		try {
+			return jobdetaildao.insertJobDetail(add);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	public boolean deleleJobDetail(JobDetail delete) {
-		return jobdetaildao.deleteJobDetail(delete);
+		try {
+			return jobdetaildao.deleteJobDetail(delete);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	public boolean updateJobDetail(JobDetail update) {
-		return jobdetaildao.updateJobDetail(update);
+		try {
+			return jobdetaildao.updateJobDetail(update);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	public List<Job> getJobsByClass(String courseClass) {
-		return jobdao.findByCourseClass(courseClass);
+		try {
+			return jobdao.findByCourseClass(courseClass);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	// download function 
 

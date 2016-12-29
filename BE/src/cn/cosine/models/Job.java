@@ -2,7 +2,7 @@ package cn.cosine.models;
 
 public class Job {
 	private String id;
-	private String user_id;
+	private String username;
 	private String course_name;
 	private String course_class;
 	private String statu;
@@ -11,11 +11,11 @@ public class Job {
 	public Job() {
 		
 	}
-	public Job(String id, String user_id, String course_name, String course_class, String statu, String date,
+	public Job(String id, String username, String course_name, String course_class, String statu, String date,
 			String url) {
 		super();
 		this.id = id;
-		this.user_id = user_id;
+		this.username = username;
 		this.course_name = course_name;
 		this.course_class = course_class;
 		this.statu = statu;
@@ -28,11 +28,11 @@ public class Job {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getUser_id() {
-		return user_id;
+	public String getUsername() {
+		return username;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getCourse_name() {
 		return course_name;

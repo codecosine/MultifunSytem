@@ -81,10 +81,10 @@ public class JobDaoImpl implements JobDAO {
 
 	@Override
 	public boolean insertJob(Job job) throws SQLException {
-		String sql = "INSERT INTO Job(id,user_id,course_name,course_class,statu,date,url) VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO Job(id,username,course_name,course_class,statu,date,url) VALUES(?,?,?,?,?,?,?)";
 		this.pstmt = this.conn.prepareStatement(sql);
 		this.pstmt.setString(1, job.getId());
-		this.pstmt.setString(2, job.getUser_id());
+		this.pstmt.setString(2, job.getUsername());
 		this.pstmt.setString(3, job.getCourse_name());
 		this.pstmt.setString(4, job.getCourse_class());
 		this.pstmt.setString(5, job.getStatu());
