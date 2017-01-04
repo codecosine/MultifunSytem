@@ -12,15 +12,17 @@
       </a>
     </h2>
       <div>
-        <ul class="navbar-list pull-right">
+        <ul class="navbar-list pull-right" v-if="!token">
           <li>
             <a title="Stock photo license" @click="showLogin">登录</a>
           </li>
           <li>
             <a href="/photo-license/" title="Stock photo license">注册</a>
           </li>
+        </ul>
+        <ul class="navbar-list pull-right" v-else>
           <li>
-            <a href="/photo-license/" title="Stock photo license" >License</a>
+            <a title="Stock photo license">{{ username }}</a>
           </li>
         </ul>
       </div>
@@ -28,6 +30,7 @@
     <router-view></router-view>
     <footer class="bs-footer">
       <div class="container">
+        <p>多功能学生信息管理系统</p>
         <p>广东工业大学</p>
       </div>
     </footer>
@@ -35,12 +38,22 @@
 </template>
 <script>
 import loginBox from './components/Session';
+import store from './vuex/store';
 
 export default {
+  name: 'app',
+  store,
   components: {
     loginBox,
   },
-  name: 'app',
+  computed: {
+    username() {
+      return this.$store.getters.username;
+    },
+    token() {
+      return this.$store.getters.token;
+    },
+  },
   data() {
     return {
       loginBox: false,
@@ -57,9 +70,7 @@ export default {
 };
 </script>
 <style lang="less">
-  //@import "./styles/flex.less";
   @import "~bootstrap/less/bootstrap.less";
-  // @import "./styles/reset.less";
   @import "./styles/base.less";
   @import "./styles/navbar.less";
   @import "./styles/loginBox.less";

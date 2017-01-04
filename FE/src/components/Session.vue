@@ -11,7 +11,7 @@
             <input id="password" type="password" v-model="user.password" class="form-control" placeholder="密码">
           </div>
           <div class="form-group">
-            <button type="button" @click="signIn" class="btn btn-block btn-danger">登录</button>
+            <button type="submit" @click="signIn" class="btn btn-block btn-danger">登录</button>
           </div>
           <div class="form-group">
             <p class="create-account center-block">
@@ -36,24 +36,22 @@
       methods: {
         /* eslint no-undef: "error" */
         /* eslint-env browser */
-        // signIn() {
-        //   this.$store.dispatch('signInRequest', this.user)
-        //     .then((res) => {
-        //       if (res.data.success) {
-        //         const auth = {
-        //           username: res.data.username,
-        //           token: res.data.token,
-        //         };
-        //         this.$store.dispatch('signInSuccess', auth);
-        //         window.localStorage.setItem('TOKEN_KEY', res.data.token);
-        //         this.$router.push({ name: 'main' });
-        //       }  // 传递 res.message
-        //     }, (err) => {
-        //       this.$store.dispatch('signInError', err);
-        //     });
-        // },
         signIn() {
-          this.$http.post('/MultifunSystemServer/UserAuth', this.user);
+          this.$http.post('/MultifunSystemServer/UserAuth', this.user)
+              .then((res) => {
+                console.log(res);
+                if (res.data.success) {
+                  const auth = {
+                    username: res.data.username,
+                    token: res.data.token,
+                  };
+                  this.$store.dispatch('signInSuccess', auth);
+                  window.localStorage.setItem('TOKEN_KEY', res.data.token);
+                  this.$router.push({ path: 'main' });
+                }
+              }, (err) => {
+                this.$store.dispatch('signInError', err);
+              });
         },
       },
     };

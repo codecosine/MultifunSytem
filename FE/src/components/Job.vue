@@ -7,7 +7,6 @@
           <form role="form">
             <div class="form-group">
               <label for="exampleInputEmail1">简介</label>
-              <p></p>
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">要求</label>
@@ -17,11 +16,26 @@
               <label for="exampleInputEmail1">提交者信息</label>
               <p></p>
             </div>
+            <div class="form-group">
 
-            <div class="checkbox">
-              <label>
-                <input type="checkbox"> Check me out
-              </label>
+              <label for="exampleInputFile">文件上传</label>
+              <file-upload
+                title="添加文件"
+                :events="events"
+                name="formFile"
+                post-action="/upload"
+                extensions="zip"
+                :files="uploadedFiles"
+                ref="upload">
+              </file-upload>
+              <input type="file" id="exampleInputFile">
+              <p class="help-block">文件要求为zip.rar打包文件</p>
+              <div class="progress-bar" v-bind:style="{ width: fileProgress + '%' }" v-show="fileProgress > 0" ></div>
+              <ul v-show="uploadedFiles.length > 0">
+                <!-- loop through the completed files -->
+                <li v-for="file in uploadedFiles">Name: <em>{{ file.name }}</em> Size: <em>{{ file.size | prettyBytes }}</em></li>
+              </ul>
+
             </div>
             <button type="submit" class="btn btn-primary">确认提交</button>
           </form>
@@ -31,9 +45,13 @@
   </div>
 </template>
 <script>
+    import FileUpload from 'vue-upload-component';
     /* eslint no-param-reassign: ["error", { "props": false }] */
     /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
     export default{
+      components: {
+        FileUpload,
+      },
       watch: {
         addTaskSuccess(value) {
           if (value) {
@@ -48,12 +66,8 @@
       },
       data() {
         return {
-          /* 提交任务表单 */
-          addTaskSuccess: false,
-          addTaskFail: false,
-          algorithm: 'IRE',
-          algorithms: [],
-          remark: '',
+          uploadedFiles: [], // my list for the v-for
+          fileProgress: 0, // global progress
           files: [],
           upload: [],
           events: {
@@ -124,57 +138,11 @@
     };
 </script>
 <style>
-  .fileInfo {
-    list-style: none;
-    line-height: 15px;
-    padding-left: 0px;
-  }
-  .fileInfo li{
-    font-size: 14px;
-    width: 60%;
-  }
-  .metatit{
-    color: #838383;
-    text-align: left;
-    font-weight: bold;
-  }
-  dl dd{
-    width: 350px;
-    float: left;
-  }
-  .algorithm-select-list{
-    margin: 0px;
-    padding: 0px;
-    list-style: none;
-  }
-  .algorithm-select-list li{
-    float: left;
-    position: relative;
-    margin: 0 4px 4px 0;
-    line-height: 28px;
-    vertical-align: middle;
-    padding: 2px;
-    cursor: pointer;
-  }
-  .algorithm-select-list li a:hover{
-    border: 1px solid #bd2013;
-  }
-  .algorithm-select-list li a {
-    float: left;
-    background-color: #fff;
-    white-space: nowrap;
-    width: auto!important;
-    min-width: 10px;
-    padding: 0 9px;
-    text-align: center;
-    border: 1px solid #b8b7bd;
-    text-decoration: none;
-  }
-  .algorithm-select-list li .algorithm-selected{
-    border: 1px solid #bd2013;
-  }
-  label {
-    display: inline-block;
-    margin-bottom: 0;
-  }
+    .progress-bar {
+      opacity: 1;
+      height: 2px;
+      margin: 0.4em 0;
+      width: 0;
+      background: green;
+    }
 </style>
