@@ -37,11 +37,6 @@
 - 类型：get
 - 参数：null
 - 返回值：{ list:[] }
-##### 获取平台发布的信息
-- 接口：/infoList
-- 类型：get
-- 参数：null
-- 返回值：{ list:[] }
 ##### 获取自己的作业信息
 - 接口：/job
 - 类型：get
@@ -53,7 +48,8 @@
 - 类型：get
 - 参数：null
 - 返回值：{ success, msg }
-
+/updatejob
+/
 
 # models
 #### user

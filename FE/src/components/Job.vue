@@ -6,24 +6,24 @@
           <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span> 数据库课程设计</h2>
           <form role="form">
             <div class="form-group">
-              <label for="exampleInputEmail1">简介</label>
+              <label>简介</label>
+              <p>{{ jobDetail.introdution }}</p>
+            </div>
+            <div class="form-group">
+              <label>课程班级</label>
+              <p>{{ jobDetail.courseClass }}</p>
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">要求</label>
-              <p></p>
+              <p>{{ jobDetail.requirement }}</p>
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">提交者信息</label>
-              <p></p>
-            </div>
-            <div class="form-group">
-
               <label for="exampleInputFile">文件上传</label>
               <file-upload
                 title="添加文件"
                 :events="events"
-                name="formFile"
-                post-action="/upload"
+                name="job"
+                post-action="/MultifunSystemServer/Upload"
                 extensions="zip"
                 :files="uploadedFiles"
                 ref="upload">
@@ -35,9 +35,9 @@
                 <!-- loop through the completed files -->
                 <li v-for="file in uploadedFiles">Name: <em>{{ file.name }}</em> Size: <em>{{ file.size | prettyBytes }}</em></li>
               </ul>
-
             </div>
             <button type="submit" class="btn btn-primary">确认提交</button>
+            <button type="button" @click="fetchJob(1)"></button>
           </form>
         </div>
       </div>
@@ -47,25 +47,32 @@
 <script>
     import FileUpload from 'vue-upload-component';
     /* eslint no-param-reassign: ["error", { "props": false }] */
-    /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
     export default{
       components: {
         FileUpload,
       },
-      watch: {
-        addTaskSuccess(value) {
-          if (value) {
-            this.changeFlag();
-          }
-        },
-        addTaskFail(value) {
-          if (value) {
-            this.changeFlag();
-          }
-        },
-      },
+      // created() {
+      //   this.fetchJob(this.$route.params.jobId);
+      // },
       data() {
         return {
+          jobDetail: {
+            jobId: '100',
+            jobName: '数据库课程设计2',
+            courseName: '数据库设计',
+            courseClass: '14级信管2班',
+            introdution: '简介',
+            requirement: '要求',
+            deadTime: '2016-1-5',
+          },
+          job: {
+            username: '',
+            course_name: '',
+            courseClass: '',
+            statu: '',
+            date: '',
+            url: '',
+          },
           uploadedFiles: [], // my list for the v-for
           fileProgress: 0, // global progress
           files: [],
@@ -74,63 +81,34 @@
             add(file, component) {
               component.active = true;
               file.headers['X-Filename'] = encodeURIComponent(file.name);
-              file.data.finename = file.name;
+              file.data.filename = file.name;
             },
           },
         };
       },
       computed: {
-        jobList() {
-          return this.$store.getters.jobList;
-        },
         fileName() {
           return this.files[0].response.fileName;
         },
-        valid() {
-          const valid = {
-            uploadError: true,
-            algorithmError: true,
-          };
-          if (this.files[0]) {
-            if (this.files[0].success) {
-              valid.uploadError = false;
-            }
-          }
-          if (this.algorithm !== '') {
-            valid.algorithmError = false;
-          }
-          valid.pass = (valid.uploadError || valid.algorithmError);
-          return valid;
-        },
       },
       methods: {
-        selectAlgorithms(item) {
-          if (this.algorithms.indexOf(item) !== -1) {
-            this.algorithms.splice(this.algorithms.indexOf(item), 1);
-          } else {
-            this.algorithms.push(item);
-          }
+        fetchJob(id) {
+          this.jobDetail = this.$store.dispatch('fetchJobDetailsById', id);
+          console.log(this.jobDetail);
         },
-        addTask() {
-          this.$http.post('/calculation/cal',
-            {
-              fileName: this.fileName,
-              algoName: this.algorithm,
-              remark: this.remark,
-            })
-            .then(() => {
-              this.addTaskSuccess = true;
-            }, (err) => {
-              this.addTaskFail = true;
-              console.error(err);
-            });
-        },
-        changeFlag() {
-          setTimeout(() => {
-            this.addTaskSuccess = false;
-            this.addTaskFail = false;
-          }, 5000);
-        },
+        // confirmJob() {
+        //   this.$http.post('/MultifunSystemServer/AddJob', this.job)
+        //       .then((res) => {
+        //         if (res.data.success) {
+        //           this.$store.dispatch('signInSuccess', res.data);
+        //           this.$router.push({ name: 'jobDetails' });
+        //         } else {
+        //           this.$store.dispatch('signInFail', res.data);
+        //         }
+        //       }, (err) => {
+        //         this.$store.dispatch('signInError', err);
+        //       });
+        // },
       },
       mounted() {
         this.upload = this.$refs.upload.$data;

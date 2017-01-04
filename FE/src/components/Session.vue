@@ -34,20 +34,14 @@
         };
       },
       methods: {
-        /* eslint no-undef: "error" */
-        /* eslint-env browser */
         signIn() {
           this.$http.post('/MultifunSystemServer/UserAuth', this.user)
               .then((res) => {
-                console.log(res);
                 if (res.data.success) {
-                  const auth = {
-                    username: res.data.username,
-                    token: res.data.token,
-                  };
-                  this.$store.dispatch('signInSuccess', auth);
-                  window.localStorage.setItem('TOKEN_KEY', res.data.token);
-                  this.$router.push({ path: 'main' });
+                  this.$store.dispatch('signInSuccess', res.data);
+                  this.$router.push({ name: 'jobDetails' });
+                } else {
+                  this.$store.dispatch('signInFail', res.data);
                 }
               }, (err) => {
                 this.$store.dispatch('signInError', err);

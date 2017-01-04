@@ -22,6 +22,15 @@ public class Job {
 		this.date = date;
 		this.url = url;
 	}
+	public Job(String username, String course_name, String course_class, String statu, String date, String url) {
+		super();
+		this.username = username;
+		this.course_name = course_name;
+		this.course_class = course_class;
+		this.statu = statu;
+		this.date = date;
+		this.url = url;
+	}
 	public String getId() {
 		return id;
 	}

@@ -44,7 +44,7 @@ public class UserService {
 		return false;
 		
 	}
-	public List<JobDetail> getJobs(){
+	public List<JobDetail> getJobDetails(){
 		try {
 			return jobdetaildao.findAll();
 		} catch (SQLException e) {

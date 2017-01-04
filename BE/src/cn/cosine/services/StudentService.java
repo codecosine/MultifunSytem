@@ -20,6 +20,30 @@ public class StudentService {
 		}
 		return null;
 	}
+	public boolean addJob(Job add) {
+		try {
+			return jobdao.insertJob(add);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public boolean updateJob(Job update) {
+		try {
+			return jobdao.updateJob(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public boolean deleteJob(Job delete) {
+		try {
+			return jobdao.deleteJob(delete);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	public boolean submitJob(Job update){
 		try {
 			return jobdao.updateJob(update);

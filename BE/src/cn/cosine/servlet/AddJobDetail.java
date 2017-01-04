@@ -10,29 +10,26 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.fastjson.JSON;
-
+import cn.cosine.models.JobDetail;
 import cn.cosine.models.Message;
-import cn.cosine.models.User;
-import cn.cosine.services.UserService;
+import cn.cosine.services.TeacherService;
 
 /**
- * Servlet implementation class UserAuth
+ * Servlet implementation class AddJobDetail
  */
-@WebServlet("/UserAuth")
-public class UserAuth extends HttpServlet {
+@WebServlet({ "/AddJobDetail", "/addJobDetail" })
+public class AddJobDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private UserService userservice = null;
+    private TeacherService teacherService = null;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserAuth() {
+    public AddJobDetail() {
         super();
-    	userservice = new UserService();
+        teacherService = new TeacherService();
         // TODO Auto-generated constructor stub
     }
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -45,7 +42,7 @@ public class UserAuth extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    response.setContentType("application/json");
+		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("utf-8") ;
 		BufferedReader br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream(),"utf-8"));
@@ -55,14 +52,13 @@ public class UserAuth extends HttpServlet {
 			sb.append(temp);
 		}
 		br.close();
-	    User auth = JSON.parseObject(sb.toString(), User.class);
-	    Boolean result = userservice.authUser(auth);
+	    JobDetail insert = JSON.parseObject(sb.toString(), JobDetail.class);
+	    Boolean result = teacherService.addJobDetail(insert);
 	    if(result){
-	    	auth.setPassword("");
-		    Message msg = new Message(true,"恭喜你登录成功",JSON.toJSONString(auth));
+		    Message msg = new Message(true,"添加成功");
 		    response.getWriter().write(JSON.toJSONString(msg));
 	    } else {
-	    	Message msg = new Message(false,"很抱歉,登录失败");
+	    	Message msg = new Message(false,"添加失败");
 		    response.getWriter().write(JSON.toJSONString(msg));
 	    }
 	}

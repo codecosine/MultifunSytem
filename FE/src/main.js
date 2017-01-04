@@ -4,15 +4,17 @@ import VueResource from 'vue-resource';
 
 import App from './App';
 
-import Home from './components/Home';
+import JobDetails from './components/JobDetails';
 import Job from './components/Job';
 import JobManager from './components/JobManager';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
+Vue.config.devtools = true;
 
 const routes = [
-  { path: '/', component: Home },
+  { name: 'home', path: '/', component: JobDetails },
+  { name: 'jobDetails', path: '/jobDetails', component: JobDetails },
   { name: 'job', path: '/job/:jobId', component: Job },
   { name: 'jobManager', path: '/jobManager', component: JobManager },
 ];

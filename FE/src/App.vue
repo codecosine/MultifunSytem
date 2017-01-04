@@ -12,7 +12,7 @@
       </a>
     </h2>
       <div>
-        <ul class="navbar-list pull-right" v-if="!token">
+        <ul class="navbar-list pull-right" v-show="!token">
           <li>
             <a title="Stock photo license" @click="showLogin">登录</a>
           </li>
@@ -20,9 +20,10 @@
             <a href="/photo-license/" title="Stock photo license">注册</a>
           </li>
         </ul>
-        <ul class="navbar-list pull-right" v-else>
+        <ul class="navbar-list pull-right" v-show="token">
+          <li></li>
           <li>
-            <a title="Stock photo license">{{ username }}</a>
+            <a title="Stock photo license">已登录: {{ username }}</a>
           </li>
         </ul>
       </div>

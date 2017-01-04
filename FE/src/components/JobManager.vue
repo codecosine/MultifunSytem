@@ -2,179 +2,126 @@
   <div class="container bs-main">
     <div class="container">
       <div class="row">
-        <div class="col-xs-10">
-          <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span> 数据库课程设计</h2>
-          <form role="form">
-            <div class="form-group">
-              <label for="exampleInputEmail1">简介</label>
-              <p></p>
+        <div class="col-xs-12">
+          <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span>课程信息安排</h2>
+          <div class="loading" v-if="loading">
+            <div class="text-xs-center" >加载列表中......
             </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">要求</label>
-              <p></p>
+          </div>
+          <file-check-modal :show="modalShow" :resultFile="modalFile" :tables="modalTable" :close="closeModal"></file-check-modal>
+          <div class="row cs-content">
+            <div class="col-lg-6">
+              <button type="button" class="btn btn-primary" v-on:click="$router.push('/addTask')">+ 新建任务</button>
             </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">提交者信息</label>
-              <p></p>
+            <div class="col-lg-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" v-model="searchQuery" placeholder="输入算法名/备注进行搜索...">
+                </div>
             </div>
-
-            <div class="checkbox">
-              <label>
-                <input type="checkbox"> Check me out
-              </label>
+            <div class="col-lg-12">
+              <table class="table table-list">
+                <thead class="thead-default">
+                <tr>
+                  <th>#id</th>
+                  <th>课程名称</th>
+                  <th>班级</th>
+                  <th>状态</th>
+                  <th>操作时间</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in jobs">
+                  <th scope="row">{{ index+1 }}</th>
+                  <td>
+                    <span>{{ item.id }}</span>
+                  </td>
+                  <td>
+                    <span class="text-primary" >{{ item.courseName }}</span>
+                  </td>
+                  <td>
+                    <span class="text-primary" >{{ item.courseClass }}</span>
+                  </td>
+                  <td>
+                    <div>
+                      <span v-bind:class="statusClassObject(item.status)" >{{ item.status | formatStatus }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="text-primary" >{{ item.date }}</span>
+                  </td>
+                  <td>
+                    <div class="operate-cell">
+                      <a role="button">修改</a>
+                      <a role="button">删除</a>
+                      <a role="button" v-if="item.status === 1" v-bind:href="'/download?resultFile='+item.resultFile">下载</a>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
             </div>
-            <button type="submit" class="btn btn-primary">确认提交</button>
-          </form>
+            <div class="col-lg-12">
+              <div class="list-split">
+                <div class="list-state">
+                  <span class="tc-15-page-text"><!--if start-->
+                    共<strong>0</strong>条记录，当前页有<strong>1</strong>条</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-    /* eslint no-param-reassign: ["error", { "props": false }] */
-    /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
     export default{
-      watch: {
-        addTaskSuccess(value) {
-          if (value) {
-            this.changeFlag();
+      filters: {
+        formatDate(time) {
+          if (!time) {
+            return '无';
           }
+          const date = new Date(time);
+          const o = {
+            month: date.getMonth() + 1,
+            day: date.getDate(),
+            hours: date.getHours(),
+            minutes: date.getMinutes(),
+            seconds: date.getSeconds(),
+            years: date.getFullYear(),
+          };
+          return `${o.years}-${o.month}-${o.day} ${o.hours}:${o.minutes}:${o.seconds}`;
         },
-        addTaskFail(value) {
-          if (value) {
-            this.changeFlag();
+        formatStatus(status) {
+          if (status === 0) {
+            return '计算中';
           }
+          if (status === 1) {
+            return '计算完成';
+          }
+          if (status === 2) {
+            return '计算错误';
+          }
+          return '错误';
         },
       },
       data() {
         return {
-          /* 提交任务表单 */
-          addTaskSuccess: false,
-          addTaskFail: false,
-          algorithm: 'IRE',
-          algorithms: [],
-          remark: '',
-          files: [],
-          upload: [],
-          events: {
-            add(file, component) {
-              component.active = true;
-              file.headers['X-Filename'] = encodeURIComponent(file.name);
-              file.data.finename = file.name;
-            },
-          },
+          loading: false,
+          error: null,
+          searchQuery: '',
         };
       },
       computed: {
-        jobList() {
-          return this.$store.getters.jobList;
-        },
-        fileName() {
-          return this.files[0].response.fileName;
-        },
-        valid() {
-          const valid = {
-            uploadError: true,
-            algorithmError: true,
-          };
-          if (this.files[0]) {
-            if (this.files[0].success) {
-              valid.uploadError = false;
-            }
-          }
-          if (this.algorithm !== '') {
-            valid.algorithmError = false;
-          }
-          valid.pass = (valid.uploadError || valid.algorithmError);
-          return valid;
+        jobs() {
+          return this.$store.getters.jobs;
         },
       },
       methods: {
-        selectAlgorithms(item) {
-          if (this.algorithms.indexOf(item) !== -1) {
-            this.algorithms.splice(this.algorithms.indexOf(item), 1);
-          } else {
-            this.algorithms.push(item);
-          }
-        },
-        addTask() {
-          this.$http.post('/calculation/cal',
-            {
-              fileName: this.fileName,
-              algoName: this.algorithm,
-              remark: this.remark,
-            })
-            .then(() => {
-              this.addTaskSuccess = true;
-            }, (err) => {
-              this.addTaskFail = true;
-              console.error(err);
-            });
-        },
-        changeFlag() {
-          setTimeout(() => {
-            this.addTaskSuccess = false;
-            this.addTaskFail = false;
-          }, 5000);
-        },
-      },
-      mounted() {
-        this.upload = this.$refs.upload.$data;
       },
     };
 </script>
 <style>
-  .fileInfo {
-    list-style: none;
-    line-height: 15px;
-    padding-left: 0px;
-  }
-  .fileInfo li{
-    font-size: 14px;
-    width: 60%;
-  }
-  .metatit{
-    color: #838383;
-    text-align: left;
-    font-weight: bold;
-  }
-  dl dd{
-    width: 350px;
-    float: left;
-  }
-  .algorithm-select-list{
-    margin: 0px;
-    padding: 0px;
-    list-style: none;
-  }
-  .algorithm-select-list li{
-    float: left;
-    position: relative;
-    margin: 0 4px 4px 0;
-    line-height: 28px;
-    vertical-align: middle;
-    padding: 2px;
-    cursor: pointer;
-  }
-  .algorithm-select-list li a:hover{
-    border: 1px solid #bd2013;
-  }
-  .algorithm-select-list li a {
-    float: left;
-    background-color: #fff;
-    white-space: nowrap;
-    width: auto!important;
-    min-width: 10px;
-    padding: 0 9px;
-    text-align: center;
-    border: 1px solid #b8b7bd;
-    text-decoration: none;
-  }
-  .algorithm-select-list li .algorithm-selected{
-    border: 1px solid #bd2013;
-  }
-  label {
-    display: inline-block;
-    margin-bottom: 0;
-  }
+
 </style>

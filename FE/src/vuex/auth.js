@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import {
-  SIGNIN_SUCCESS,
+  UPDATE_USER,
+  UPDATE_MSG,
+  UPDATE_TOKEN,
   LOGOUT_SUCCESS,
   SIGNIN_REQUEST,
   SIGNIN_REQUEST_FINISH,
@@ -12,21 +14,25 @@ const authState = {
   token: null,
   request: false,
   message: {
-    msgstate: false,
+    success: false,
     msg: '',
   },
   user: {
+    id: '',
     username: '未登录',
     role: '',
-    id: '',
   },
 };
 /* eslint no-param-reassign: ["error", { "props": false }] */
 const mutations = {
-  [SIGNIN_SUCCESS](state, data) {
-    state.request = false;
-    state.user.username = data.username;
-    state.token = data.token;
+  [UPDATE_USER](state, data) {
+    state.user = data;
+  },
+  [UPDATE_MSG](state, data) {
+    state.message = data;
+  },
+  [UPDATE_TOKEN](state, data) {
+    state.token = data;
   },
   [LOGOUT_SUCCESS](state) {
     state.token = null;
@@ -40,9 +46,6 @@ const mutations = {
   [SIGNIN_REQUEST_FINISH](state) {
     state.request = false;
   },
-  [UPDATE_USER_MSG](state, data) {
-    state.usermsg = data;
-  },
   [CLEAR_USER_MSG](state) {
     state.usermsg = {
       msgstate: false,
@@ -51,6 +54,15 @@ const mutations = {
   },
 };
 const actions = {
+  signInSuccess({ state, commit }, data) {
+    const loginUser = JSON.parse(data.content);
+    commit(UPDATE_USER, { id: loginUser.id, username: loginUser.username, role: loginUser.role });
+    commit(UPDATE_MSG, { success: data.success, msg: data.message });
+    commit(UPDATE_TOKEN, 'TEMP');
+  },
+  signInFail({ state, commit }, data) {
+    commit(UPDATE_MSG, { success: data.success, msg: data.message });
+  },
   signInRequest({ state, commit }, user) {
     if (state.request) {
       return new Error('请求重复发送');
@@ -76,11 +88,7 @@ const actions = {
   clearUserMsg({ commit }) {
     commit(CLEAR_USER_MSG);
   },
-  signInSuccess({ state, commit }, data) {
-    commit(SIGNIN_SUCCESS, data);
-    commit(SIGNIN_REQUEST_FINISH);
-    commit(UPDATE_USER_MSG, { msgstate: 'success', msg: '登录成功，正转入应用页' });
-  },
+
   logout({ commit }) {
     commit(LOGOUT_SUCCESS);
     commit(UPDATE_USER_MSG, { msgstate: 'info', msg: '注销成功' });

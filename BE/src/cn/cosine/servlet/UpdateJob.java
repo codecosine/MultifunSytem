@@ -13,23 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 
+import cn.cosine.models.Job;
 import cn.cosine.models.Message;
-import cn.cosine.models.User;
-import cn.cosine.services.UserService;
+import cn.cosine.services.StudentService;
 
 /**
- * Servlet implementation class UserAuth
+ * Servlet implementation class UpdateJob
  */
-@WebServlet("/UserAuth")
-public class UserAuth extends HttpServlet {
+@WebServlet({ "/UpdateJob", "/updatejob" })
+
+public class UpdateJob extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private UserService userservice = null;
+    private StudentService studentservice = null;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserAuth() {
+    public UpdateJob() {
         super();
-    	userservice = new UserService();
+    	studentservice = new StudentService();
         // TODO Auto-generated constructor stub
     }
 
@@ -45,7 +47,7 @@ public class UserAuth extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    response.setContentType("application/json");
+		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("utf-8") ;
 		BufferedReader br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream(),"utf-8"));
@@ -55,14 +57,13 @@ public class UserAuth extends HttpServlet {
 			sb.append(temp);
 		}
 		br.close();
-	    User auth = JSON.parseObject(sb.toString(), User.class);
-	    Boolean result = userservice.authUser(auth);
+	    Job update = JSON.parseObject(sb.toString(), Job.class);
+	    Boolean result = studentservice.updateJob(update);
 	    if(result){
-	    	auth.setPassword("");
-		    Message msg = new Message(true,"恭喜你登录成功",JSON.toJSONString(auth));
+		    Message msg = new Message(true,"修改成功");
 		    response.getWriter().write(JSON.toJSONString(msg));
 	    } else {
-	    	Message msg = new Message(false,"很抱歉,登录失败");
+	    	Message msg = new Message(false,"修改失败");
 		    response.getWriter().write(JSON.toJSONString(msg));
 	    }
 	}
