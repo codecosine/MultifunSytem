@@ -10,10 +10,10 @@ import cn.cosine.models.JobDetail;
 
 public class TeacherService {
 	private JobDetailDaoImpl jobdetaildao = null;
-	private JobDaoImpl jobdao = null;
+	// private JobDaoImpl jobdao = null;
 	public TeacherService() {
 		jobdetaildao = JobDetailDaoImpl.getInstance();
-		jobdao = JobDaoImpl.getInstance();
+		// jobdao = JobDaoImpl.getInstance();
 	}
 	public boolean addJobDetail(JobDetail add) {
 		try {
@@ -43,12 +43,7 @@ public class TeacherService {
 		return false;
 	}
 	public List<Job> getJobsByClass(String courseClass) {
-		try {
-			return jobdao.findByCourseClass(courseClass);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return null;
 	}
 	// download function 

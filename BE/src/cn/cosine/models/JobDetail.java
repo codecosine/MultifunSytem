@@ -1,74 +1,79 @@
 package cn.cosine.models;
 
 public class JobDetail {
-	private String id;
+	private int id;
 	private String jobname;
-	private String courseName;
-	private String courseClass;
-	private String introdution;
-	private String requirement;
+	private String operator;
+	private String coursename;
+	private String courseclass;
+	private String requirements;
 	private String deadTime;
 	public JobDetail() {
 		
 	}
-	public JobDetail(String jobname, String courseName, String courseClass, String introdution, String requirement,
+	public JobDetail(int id, String jobname, String operator, String coursename, String courseclass,
+			String requirements, String deadTime) {
+		super();
+		this.id = id;
+		this.jobname = jobname;
+		this.operator = operator;
+		this.coursename = coursename;
+		this.courseclass = courseclass;
+		this.requirements = requirements;
+		this.deadTime = deadTime;
+	}
+	public JobDetail(String jobname, String operator, String coursename, String courseclass, String requirements,
 			String deadTime) {
 		super();
 		this.jobname = jobname;
-		this.courseName = courseName;
-		this.courseClass = courseClass;
-		this.introdution = introdution;
-		this.requirement = requirement;
+		this.operator = operator;
+		this.coursename = coursename;
+		this.courseclass = courseclass;
+		this.requirements = requirements;
 		this.deadTime = deadTime;
 	}
-	public JobDetail(String id, String jobname, String courseName, String courseClass, String introdution,
-			String requirement, String deadTime) {
+	public JobDetail(int id) {
 		super();
 		this.id = id;
-		this.jobname = jobname;
-		this.courseName = courseName;
-		this.courseClass = courseClass;
-		this.introdution = introdution;
-		this.requirement = requirement;
-		this.deadTime = deadTime;
 	}
-	
-	public String getId() {
+
+	public int getId() {
 		return id;
 	}
-	
-	public void setId(String id) {
+
+	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getJobname() {
 		return jobname;
 	}
 	public void setJobname(String jobname) {
 		this.jobname = jobname;
 	}
-	public String getCourseName() {
-		return courseName;
+	public String getOperator() {
+		return operator;
 	}
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
-	public String getCourseClass() {
-		return courseClass;
+	public String getCoursename() {
+		return coursename;
 	}
-	public void setCourseClass(String courseClass) {
-		this.courseClass = courseClass;
+	public void setCoursename(String coursename) {
+		this.coursename = coursename;
 	}
-	public String getIntrodution() {
-		return introdution;
+	public String getCourseclass() {
+		return courseclass;
 	}
-	public void setIntrodution(String introdution) {
-		this.introdution = introdution;
+	public void setCourseclass(String courseclass) {
+		this.courseclass = courseclass;
 	}
-	public String getRequirement() {
-		return requirement;
+	public String getRequirements() {
+		return requirements;
 	}
-	public void setRequirement(String requirement) {
-		this.requirement = requirement;
+	public void setRequirements(String requirements) {
+		this.requirements = requirements;
 	}
 	public String getDeadTime() {
 		return deadTime;
@@ -76,11 +81,7 @@ public class JobDetail {
 	public void setDeadTime(String deadTime) {
 		this.deadTime = deadTime;
 	}
-	@Override
-	public String toString() {
-		return "JobDetail [jobName=" + jobname + ", courseName=" + courseName + ", courseClass=" + courseClass
-				+ ", introdution=" + introdution + ", requirement=" + requirement + ", deadTime=" + deadTime + "]";
-	}
+	
 
 	
 }

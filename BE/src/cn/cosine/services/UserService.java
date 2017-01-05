@@ -1,5 +1,7 @@
 package cn.cosine.services;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,6 +17,26 @@ public class UserService {
 		userdao = UserDaoImpl.getInstance();
 		jobdetaildao = JobDetailDaoImpl.getInstance();
 	}
+	public static String parseStrToMd5L32(String str){
+		String reStr = null;
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			byte[] bytes = md5.digest(str.getBytes());
+			StringBuffer stringBuffer = new StringBuffer();
+			for (byte b : bytes){
+				int bt = b&0xff;
+				if (bt < 16){
+					stringBuffer.append(0);
+				} 
+				stringBuffer.append(Integer.toHexString(bt));
+			}
+			reStr = stringBuffer.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return reStr;
+	}
+
 	public boolean authUser(User user) {
 		User findUser = null;
 		try {
@@ -23,7 +45,26 @@ public class UserService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		return false;
+	}
+	public boolean registerUserForStudent(User register) {
+		register.setRole("student");
+		register.setPassword(parseStrToMd5L32(register.getPassword()));
+		try {
+			return userdao.insertUser(register);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public boolean registerUserForTeacher(User register) {
+		register.setRole("teacher");
+		register.setPassword(parseStrToMd5L32(register.getPassword()));
+		try {
+			return userdao.insertUser(register);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 	public boolean resetPassword(User user,String resetPass) {
@@ -32,7 +73,7 @@ public class UserService {
 			if (this.authUser(user)) {
 				reset.setId(user.getId());
 				reset.setUsername(user.getUsername());
-				reset.setPassword(resetPass);
+				reset.setPassword(parseStrToMd5L32(resetPass));
 				reset.setRole(user.getRole());
 				return userdao.updateUser(reset);
 			}

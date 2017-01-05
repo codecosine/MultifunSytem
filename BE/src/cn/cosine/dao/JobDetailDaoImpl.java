@@ -31,12 +31,12 @@ public class JobDetailDaoImpl implements JobDetailDAO {
 	@Override
 	public List<JobDetail> findAll() throws SQLException {
 		List<JobDetail> result = new ArrayList<JobDetail>();
-		String sql = "SELECT id,jobname,courseName,courseClass,introdution,requirement,deadTime FROM JobDetail";
+		String sql = "SELECT id,jobname,operator,coursename,courseclass,requirements,deadTime FROM JobDetail";
 		this.pstmt = this.conn.prepareStatement(sql);
 		ResultSet rs = this.pstmt.executeQuery();
 		JobDetail temp = null;
 		while (rs.next()) {
-			temp = new JobDetail(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+			temp = new JobDetail(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
 			result.add(temp);
 		}
 		return result;
@@ -44,13 +44,13 @@ public class JobDetailDaoImpl implements JobDetailDAO {
 
 	@Override
 	public boolean insertJobDetail(JobDetail jobdetail) throws SQLException  {
-		String sql = "INSERT INTO JobDetail(jobname,courseName,courseClass,introdution,requirement,deadTime) VALUES(?,?,?,?,?,?)";
+		String sql = "INSERT INTO JobDetail(jobname,operator,coursename,courseclass,requirements,deadTime) VALUES(?,?,?,?,?,?)";
 		this.pstmt = this.conn.prepareStatement(sql);
 		this.pstmt.setString(1, jobdetail.getJobname());
-		this.pstmt.setString(2, jobdetail.getCourseName());
-		this.pstmt.setString(3, jobdetail.getCourseClass());
-		this.pstmt.setString(4, jobdetail.getIntrodution());
-		this.pstmt.setString(5, jobdetail.getRequirement());
+		this.pstmt.setString(2, jobdetail.getOperator());
+		this.pstmt.setString(3, jobdetail.getCoursename());
+		this.pstmt.setString(4, jobdetail.getCourseclass());
+		this.pstmt.setString(5, jobdetail.getRequirements());
 		this.pstmt.setString(6, jobdetail.getDeadTime());
 		if (this.pstmt.executeUpdate()>0) {
 			this.pstmt.close();
@@ -62,14 +62,15 @@ public class JobDetailDaoImpl implements JobDetailDAO {
 
 	@Override
 	public boolean updateJobDetail(JobDetail jobdetail) throws SQLException  {
-		String sql = "UPDATE JobDetail SET courseName=?,courseClass=?,introdution=?,requirement=?,deadTime=? WHERE jobname=?";
+		String sql = "UPDATE JobDetail SET jobname=?,operator=?,coursename=?,courseclass=?,requirements=?,deadTime=? WHERE id=?";
 		this.pstmt = this.conn.prepareStatement(sql);
-		this.pstmt.setString(1, jobdetail.getCourseName());
-		this.pstmt.setString(2, jobdetail.getCourseClass());
-		this.pstmt.setString(3, jobdetail.getIntrodution());
-		this.pstmt.setString(4, jobdetail.getRequirement());
-		this.pstmt.setString(5, jobdetail.getDeadTime());
-		this.pstmt.setString(6, jobdetail.getJobname());
+		this.pstmt.setString(1, jobdetail.getJobname());
+		this.pstmt.setString(2, jobdetail.getOperator());
+		this.pstmt.setString(3, jobdetail.getCoursename());
+		this.pstmt.setString(4, jobdetail.getCourseclass());
+		this.pstmt.setString(5, jobdetail.getRequirements());
+		this.pstmt.setString(6, jobdetail.getDeadTime());
+		this.pstmt.setInt(7, jobdetail.getId());
 		if (this.pstmt.executeUpdate()>0) {
 			this.pstmt.close();
 			return true;
@@ -80,9 +81,9 @@ public class JobDetailDaoImpl implements JobDetailDAO {
 
 	@Override
 	public boolean deleteJobDetail(JobDetail jobdetail) throws SQLException  {
-		String sql = "DELETE FROM JobDetail WHERE jobname=?";
+		String sql = "DELETE FROM JobDetail WHERE id=?";
 		this.pstmt = this.conn.prepareStatement(sql);
-		this.pstmt.setString(1, jobdetail.getJobname());
+		this.pstmt.setInt(7, jobdetail.getId());
 		if (this.pstmt.executeUpdate()>0) {
 			this.pstmt.close();
 			return true;

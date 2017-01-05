@@ -7,9 +7,8 @@ import cn.cosine.models.Job;
 
 public interface JobDAO {
     List<Job> findAll() throws SQLException;
-    List<Job> findByUserId(String userId) throws SQLException;
-    List<Job> findByCourseName(String courseName) throws SQLException;
-    List<Job> findByCourseClass(String courseClass) throws SQLException;
+    List<Job> findByUsername(String username) throws SQLException;
+	List<Job> findByJobname(String jobname) throws SQLException;
     boolean insertJob(Job job) throws SQLException;
     boolean updateJob(Job job) throws SQLException;
     boolean deleteJob(Job job) throws SQLException;

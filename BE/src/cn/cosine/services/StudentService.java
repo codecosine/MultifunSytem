@@ -11,9 +11,9 @@ public class StudentService {
 	public StudentService() {
 		jobdao = JobDaoImpl.getInstance();
 	}
-	public List<Job> getUserJobs(String userId) {
+	public List<Job> getUserJobs(String username) {
 		try {
-			return jobdao.findByUserId(userId);
+			return jobdao.findByUsername(username);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,15 +40,6 @@ public class StudentService {
 		try {
 			return jobdao.deleteJob(delete);
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	public boolean submitJob(Job update){
-		try {
-			return jobdao.updateJob(update);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
