@@ -9,7 +9,7 @@ public class JobDetail {
 	private String requirements;
 	private String deadTime;
 	public JobDetail() {
-		
+
 	}
 	public JobDetail(int id, String jobname, String operator, String coursename, String courseclass,
 			String requirements, String deadTime) {
@@ -81,7 +81,7 @@ public class JobDetail {
 	public void setDeadTime(String deadTime) {
 		this.deadTime = deadTime;
 	}
-	
 
-	
+
+
 }

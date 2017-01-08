@@ -6,15 +6,11 @@
           <div class="card-title">
             <b></b><span>{{ job.jobname }}</span><b></b>
           </div>
-          <h5 class="card-subtitle">课程名称:<span class="card-text">{{ job.courseName }}</span></h5>
-          <h5 class="card-subtitle">班级:<span class="card-text">{{ job.courseClass }}</span></h5>
+          <h5 class="card-subtitle">课程名称:<span class="card-text">{{ job.coursename }}</span></h5>
+          <h5 class="card-subtitle">班级:<span class="card-text">{{ job.courseclass }}</span></h5>
           <h5 class="card-subtitle">截止时间:<span class="card-text">{{ job.deadTime }}</span></h5>
-          <h5 class="card-subtitle">简介:</h5>
-          <ul>
-            <li><p class="card-text">{{ job.introdution }}</p></li>
-          </ul>
           <div class="card-action">
-            <a @click="toJob(job.jobId)" class="card-btn btn btn-primary">立即进入</a>
+            <a @click="toJob(job.id)" class="card-btn btn btn-primary">立即进入</a>
           </div>
         </div>
       </div>
@@ -37,7 +33,6 @@ export default {
   },
   methods: {
     toJob(jobId) {
-      console.log('tojob');
       this.$router.push({ name: 'job', params: { jobId } });
     },
     fetchJobDetails() {

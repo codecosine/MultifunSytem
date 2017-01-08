@@ -6,29 +6,39 @@
           <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span> 数据库课程设计</h2>
           <form role="form">
             <div class="form-group">
-              <label>简介</label>
-              <p>{{ jobDetail.introdution }}</p>
+              <label>课程名称</label>
+              <p>{{ jobDetail.coursename }}</p>
+            </div>
+            <div class="form-group">
+              <label>操作者</label>
+              <p>{{ jobDetail.operator }}</p>
             </div>
             <div class="form-group">
               <label>课程班级</label>
-              <p>{{ jobDetail.courseClass }}</p>
+              <p>{{ jobDetail.courseclass }}</p>
+            </div>
+            <div class="form-group">
+              <label>截止时间</label>
+              <p>{{ jobDetail.deadTime }}</p>
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">要求</label>
-              <p>{{ jobDetail.requirement }}</p>
+              <p>{{ jobDetail.requirements }}</p>
             </div>
             <div class="form-group">
               <label for="exampleInputFile">文件上传</label>
-              <file-upload
-                title="添加文件"
-                :events="events"
-                name="job"
-                post-action="/MultifunSystemServer/Upload"
-                extensions="zip"
-                :files="uploadedFiles"
-                ref="upload">
-              </file-upload>
-              <input type="file" id="exampleInputFile">
+              <div>
+                  <file-upload
+                    title="添加文件"
+                    :events="events"
+                    class="btn btn-default"
+                    name="job"
+                    post-action="/MultifunSystemServer/Upload"
+                    extensions="zip"
+                    :files="uploadedFiles"
+                    ref="upload">
+                  </file-upload>
+              </div>
               <p class="help-block">文件要求为zip.rar打包文件</p>
               <div class="progress-bar" v-bind:style="{ width: fileProgress + '%' }" v-show="fileProgress > 0" ></div>
               <ul v-show="uploadedFiles.length > 0">
@@ -36,8 +46,7 @@
                 <li v-for="file in uploadedFiles">Name: <em>{{ file.name }}</em> Size: <em>{{ file.size | prettyBytes }}</em></li>
               </ul>
             </div>
-            <button type="submit" class="btn btn-primary">确认提交</button>
-            <button type="button" @click="fetchJob(1)"></button>
+            <button type="submit" class="btn btn-lg btn-primary">确认提交</button>
           </form>
         </div>
       </div>
@@ -51,20 +60,8 @@
       components: {
         FileUpload,
       },
-      // created() {
-      //   this.fetchJob(this.$route.params.jobId);
-      // },
       data() {
         return {
-          jobDetail: {
-            jobId: '100',
-            jobName: '数据库课程设计2',
-            courseName: '数据库设计',
-            courseClass: '14级信管2班',
-            introdution: '简介',
-            requirement: '要求',
-            deadTime: '2016-1-5',
-          },
           job: {
             username: '',
             course_name: '',
@@ -90,25 +87,42 @@
         fileName() {
           return this.files[0].response.fileName;
         },
+        jobDetails() {
+          return this.$store.getters.jobDetails;
+        },
+        jobDetail() {
+          let jobDetail = {
+            id: '123',
+            jobname: '尚未加载到该课程作业',
+            coursename: 'XXXX',
+            courseclass: 'XXX',
+            operator: 'XXX',
+            requirements: '要求',
+            deadTime: '',
+          };
+          const id = this.$route.params.jobId;
+          this.jobDetails.forEach((ele) => {
+            if (ele.id === id) {
+              jobDetail = ele;
+            }
+          });
+          return jobDetail;
+        },
       },
       methods: {
-        fetchJob(id) {
-          this.jobDetail = this.$store.dispatch('fetchJobDetailsById', id);
-          console.log(this.jobDetail);
+        confirmJob() {
+          this.$http.post('/MultifunSystemServer/AddJob', this.job)
+              .then((res) => {
+                if (res.data.success) {
+                  this.$store.dispatch('signInSuccess', res.data);
+                  this.$router.push({ name: 'jobDetails' });
+                } else {
+                  this.$store.dispatch('signInFail', res.data);
+                }
+              }, (err) => {
+                this.$store.dispatch('signInError', err);
+              });
         },
-        // confirmJob() {
-        //   this.$http.post('/MultifunSystemServer/AddJob', this.job)
-        //       .then((res) => {
-        //         if (res.data.success) {
-        //           this.$store.dispatch('signInSuccess', res.data);
-        //           this.$router.push({ name: 'jobDetails' });
-        //         } else {
-        //           this.$store.dispatch('signInFail', res.data);
-        //         }
-        //       }, (err) => {
-        //         this.$store.dispatch('signInError', err);
-        //       });
-        // },
       },
       mounted() {
         this.upload = this.$refs.upload.$data;
@@ -116,11 +130,14 @@
     };
 </script>
 <style>
-    .progress-bar {
-      opacity: 1;
-      height: 2px;
-      margin: 0.4em 0;
-      width: 0;
-      background: green;
-    }
+  .form-group>label{
+    font-size: 18px;
+  }
+  .progress-bar {
+    opacity: 1;
+    height: 2px;
+    margin: 0.4em 0;
+    width: 0;
+    background: green;
+  }
 </style>

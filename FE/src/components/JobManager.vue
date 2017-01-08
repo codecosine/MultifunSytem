@@ -3,28 +3,25 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
-          <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span>课程信息安排</h2>
+          <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span>作业信息</h2>
           <div class="loading" v-if="loading">
             <div class="text-xs-center" >加载列表中......
             </div>
           </div>
-          <file-check-modal :show="modalShow" :resultFile="modalFile" :tables="modalTable" :close="closeModal"></file-check-modal>
           <div class="row cs-content">
-            <div class="col-lg-6">
-              <button type="button" class="btn btn-primary" v-on:click="$router.push('/addTask')">+ 新建任务</button>
-            </div>
-            <div class="col-lg-6">
+            <div class="pull-right searchQuery">
                 <div class="input-group">
-                  <input type="text" class="form-control" v-model="searchQuery" placeholder="输入算法名/备注进行搜索...">
+                  <input type="text" class="form-control" v-model="searchQuery" placeholder="输入课程号/学号进行筛选...">
                 </div>
             </div>
             <div class="col-lg-12">
               <table class="table table-list">
                 <thead class="thead-default">
                 <tr>
-                  <th>#id</th>
-                  <th>课程名称</th>
-                  <th>班级</th>
+                  <th>作业号</th>
+                  <th>课程号</th>
+                  <th>作业名</th>
+                  <th>学号</th>
                   <th>状态</th>
                   <th>操作时间</th>
                   <th>操作</th>
@@ -32,28 +29,28 @@
                 </thead>
                 <tbody>
                 <tr v-for="item in jobs">
-                  <th scope="row">{{ index+1 }}</th>
+                  <th scope="row">{{ item.id }}</th>
                   <td>
                     <span>{{ item.id }}</span>
                   </td>
                   <td>
-                    <span class="text-primary" >{{ item.courseName }}</span>
+                    <span class="text-primary" >{{ item.jobname }}</span>
                   </td>
                   <td>
-                    <span class="text-primary" >{{ item.courseClass }}</span>
+                    <span>{{ item.username }}</span>
                   </td>
                   <td>
                     <div>
-                      <span v-bind:class="statusClassObject(item.status)" >{{ item.status | formatStatus }}</span>
+                      <span v-bind:class="statusClassObject(item.statu)" >{{ item.statu | formatStatus }}</span>
                     </div>
                   </td>
                   <td>
-                    <span class="text-primary" >{{ item.date }}</span>
+                    <span>{{ item.submitTime }}</span>
                   </td>
                   <td>
                     <div class="operate-cell">
-                      <a role="button">修改</a>
-                      <a role="button">删除</a>
+                      <a class="text-primary" role="button">修改</a>
+                      <a class="text-primary" role="button">删除</a>
                       <a role="button" v-if="item.status === 1" v-bind:href="'/download?resultFile='+item.resultFile">下载</a>
                     </div>
                   </td>
@@ -95,13 +92,13 @@
         },
         formatStatus(status) {
           if (status === 0) {
-            return '计算中';
+            return '待审核';
           }
           if (status === 1) {
-            return '计算完成';
+            return '已完成';
           }
           if (status === 2) {
-            return '计算错误';
+            return '错误';
           }
           return '错误';
         },
@@ -119,9 +116,21 @@
         },
       },
       methods: {
+        statusClassObject(status) {
+          if (status === 1) {
+            return { 'text-success': true };
+          }
+          if (status === 2) {
+            return { 'text-danger': true };
+          }
+          return { 'text-primary': true };
+        },
       },
     };
 </script>
 <style>
+ .searchQuery{
+   margin-bottom: 1.5rem;
+ }
 
 </style>
