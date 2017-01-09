@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
-          <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span>作业信息</h2>
+          <h2 class="page-header"><span class="glyphicon glyphicon-star"></span>作业信息列表</h2>
           <div class="loading" v-if="loading">
             <div class="text-xs-center" >加载列表中......
             </div>
@@ -11,7 +11,7 @@
           <div class="row cs-content">
             <div class="pull-right searchQuery">
                 <div class="input-group">
-                  <input type="text" class="form-control" v-model="searchQuery" placeholder="输入课程号/学号进行筛选...">
+                  <input type="text" class="form-control" v-model="searchQuery" placeholder="输入作业名/学号进行筛选...">
                 </div>
             </div>
             <div class="col-lg-12">
@@ -19,7 +19,6 @@
                 <thead class="thead-default">
                 <tr>
                   <th>作业号</th>
-                  <th>课程号</th>
                   <th>作业名</th>
                   <th>学号</th>
                   <th>状态</th>
@@ -28,11 +27,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="item in jobs">
+                <tr v-for="item in filteredItems">
                   <th scope="row">{{ item.id }}</th>
-                  <td>
-                    <span>{{ item.id }}</span>
-                  </td>
                   <td>
                     <span class="text-primary" >{{ item.jobname }}</span>
                   </td>
@@ -62,7 +58,7 @@
               <div class="list-split">
                 <div class="list-state">
                   <span class="tc-15-page-text"><!--if start-->
-                    共<strong>0</strong>条记录，当前页有<strong>1</strong>条</span>
+                    共<strong>{{ filteredItems.length }}</strong>条记录，当前页有<strong>1</strong>条</span>
                 </div>
               </div>
             </div>
@@ -74,6 +70,9 @@
 </template>
 <script>
     export default{
+      created() {
+        this.fetchJobs();
+      },
       filters: {
         formatDate(time) {
           if (!time) {
@@ -114,6 +113,11 @@
         jobs() {
           return this.$store.getters.jobs;
         },
+        filteredItems() {
+          const self = this;
+          return self.jobs.filter(item => item.username.indexOf(self.searchQuery) !== -1 ||
+          item.jobname.includes(self.searchQuery));
+        },
       },
       methods: {
         statusClassObject(status) {
@@ -124,6 +128,14 @@
             return { 'text-danger': true };
           }
           return { 'text-primary': true };
+        },
+        fetchJobs() {
+          this.$http.get('/MultifunSystemServer/Jobs')
+          .then((res) => {
+            this.$store.dispatch('fetchJobsSuccess', res.data);
+          }, (err) => {
+            this.error = err.toString();
+          });
         },
       },
     };

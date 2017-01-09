@@ -1,10 +1,5 @@
 <template>
   <div id="app">
-    <div class="modal-back" v-show="loginBox" @click="closeLogin">
-    </div>
-    <div class="loginBox" v-show="loginBox">
-      <login-box></login-box>
-    </div>
     <header class="navbar">
       <h2 class="navbar-title">
         <a class="anchor" data-track-action="navbar" data-track-label="logo" href="/">
@@ -14,16 +9,19 @@
       <div>
         <ul class="navbar-list pull-right" v-show="!token">
           <li>
-            <a title="Stock photo license" @click="showLogin">登录</a>
-          </li>
-          <li>
-            <a href="/photo-license/" title="Stock photo license">注册</a>
+            <router-link :to="{ name: 'session', params: { type: 'login' }}">登录</router-link>
+            <router-link :to="{ name: 'session', params: { type: 'register' }}">注册</router-link>
           </li>
         </ul>
         <ul class="navbar-list pull-right" v-show="token">
-          <li></li>
           <li>
-            <a title="Stock photo license">已登录: {{ username }}</a>
+            <router-link :to="{ name: 'jobDetails'}">作业列表</router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'jobDetails'}">我的作业</router-link>
+          </li>
+          <li>
+            <a>{{ user.role }}--{{ user.username }}</a>
           </li>
         </ul>
       </div>
@@ -38,34 +36,17 @@
   </div>
 </template>
 <script>
-import loginBox from './components/Session';
 import store from './vuex/store';
 
 export default {
   name: 'app',
   store,
-  components: {
-    loginBox,
-  },
   computed: {
-    username() {
-      return this.$store.getters.username;
+    user() {
+      return this.$store.getters.user;
     },
     token() {
       return this.$store.getters.token;
-    },
-  },
-  data() {
-    return {
-      loginBox: false,
-    };
-  },
-  methods: {
-    showLogin() {
-      this.loginBox = true;
-    },
-    closeLogin() {
-      this.loginBox = false;
     },
   },
 };
@@ -74,5 +55,4 @@ export default {
   @import "~bootstrap/less/bootstrap.less";
   @import "./styles/base.less";
   @import "./styles/navbar.less";
-  @import "./styles/loginBox.less";
 </style>

@@ -10,7 +10,7 @@
               <p>{{ jobDetail.coursename }}</p>
             </div>
             <div class="form-group">
-              <label>操作者</label>
+              <label>创建教师</label>
               <p>{{ jobDetail.operator }}</p>
             </div>
             <div class="form-group">
@@ -39,7 +39,6 @@
                     ref="upload">
                   </file-upload>
               </div>
-              <p class="help-block">文件要求为zip.rar打包文件</p>
               <div class="progress-bar" v-bind:style="{ width: fileProgress + '%' }" v-show="fileProgress > 0" ></div>
               <ul v-show="uploadedFiles.length > 0">
                 <!-- loop through the completed files -->
@@ -130,7 +129,7 @@
     };
 </script>
 <style>
-  .form-group>label{
+  .form-group > label{
     font-size: 18px;
   }
   .progress-bar {

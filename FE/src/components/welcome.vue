@@ -5,17 +5,16 @@
         <div class="container">
           <div class="row">
             <div class="col-sm-6">
-
             </div>
             <div class="col-sm-6">
               <form role="form" class="center-block auth-modal auth-modal-inner">
                 <div class="form-group">
-                  <label for="Rusername">学号</label>
-                  <input id="Rusername" type="text" placeholder="输入你的学号/用户名" v-model="user.username" class="form-control">
+                  <label for="username">学号</label>
+                  <input id="username" type="text" placeholder="输入你的学号/用户名" v-model="user.username" class="form-control">
                 </div>
                 <div class="form-group">
-                  <label for="Rpassword">密码</label>
-                  <input type="password" class="form-control" placeholder="输入你的密码" v-model="user.password" id="Rpassword">
+                  <label for="password">密码</label>
+                  <input type="password" class="form-control" placeholder="输入你的密码" v-model="user.password" id="password">
                  </div>
                  <div class="form-group action-group">
                    <button type="submit" @click="signIn" class="btn btn-block btn-danger">登录</button>
@@ -29,16 +28,16 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-4">
+          <h3>课程作业安排</h3>
+          <p>课程信息安排一览无余，清晰准确，再也不担心忘记弄混。 </p>
+        </div>
+        <div class="col-sm-4">
+          <h3>作业轻松上传</h3>
+          <p>按要求一键上传,随时查看情况,截止时间前随时修改</p>
+        </div>
+        <div class="col-sm-4">
           <h3>课程信息查看</h3>
-          <p>课程信息安排一览无余，再也不担心忘记。 </p>
-        </div>
-        <div class="col-sm-4">
-          <h3>一键上传</h3>
-          <p></p>
-        </div>
-        <div class="col-sm-4">
-          <h3>任务列表</h3>
-          <p>课程结果，校园信息</p>
+          <p>课程相关讨论心得</p>
         </div>
       </div>
     </div>
@@ -73,10 +72,9 @@ export default {
   },
 };
 </script>
-
 <style lang="css">
 .banner {
-  background-image: url(../assets/pexels-photo.jpg);
+  background-image: url(../assets/banner-high.jpg);
   background-size: cover;
   height: 500px;
   margin-bottom: 50px;
@@ -87,7 +85,7 @@ export default {
 }
 .banner::before {
   position: absolute;
-  height: 500px;
+  height: 550px;
   top: 0;
   right: 0;
   bottom: 0;

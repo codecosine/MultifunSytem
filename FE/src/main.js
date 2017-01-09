@@ -9,6 +9,7 @@ import Job from './components/Job';
 import JobManager from './components/JobManager';
 import AddJobDetail from './components/AddJobDetail';
 import Welcome from './components/welcome';
+import Session from './components/Session';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
@@ -16,10 +17,11 @@ Vue.config.devtools = true;
 
 const routes = [
   { name: 'welcome', path: '/', component: Welcome },
-  { name: 'jobDetails', path: '/jobDetails', component: JobDetails },
-  { name: 'addJobDetail', path: '/addJobDetail', component: AddJobDetail },
-  { name: 'job', path: '/job/:jobId', component: Job },
-  { name: 'jobManager', path: '/jobManager', component: JobManager },
+  { name: 'session', path: '/session/:type', component: Session },
+  { name: 'jobDetails', path: '/app/jobDetails', component: JobDetails },
+  { name: 'addJobDetail', path: '/app/addJobDetail', component: AddJobDetail },
+  { name: 'job', path: '/app/job/:jobId', component: Job },
+  { name: 'jobManager', path: '/app/jobManager', component: JobManager },
 ];
 const router = new VueRouter({
   routes,

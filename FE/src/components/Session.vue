@@ -33,6 +33,14 @@
           },
         };
       },
+      computed: {
+        type() {
+          if (!this.$route.params.type) {
+            return 'login';
+          }
+          return this.$route.params.type;
+        },
+      },
       methods: {
         signIn() {
           this.$http.post('/MultifunSystemServer/UserAuth', this.user)

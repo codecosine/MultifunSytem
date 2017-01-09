@@ -20,7 +20,7 @@ const authState = {
   user: {
     id: '',
     username: '未登录',
-    role: '',
+    role: '未登录',
   },
 };
 /* eslint no-param-reassign: ["error", { "props": false }] */
