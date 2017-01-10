@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-10">
-          <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span> 数据库课程设计</h2>
+          <h2 class="page-header"><span class="glyphicon glyphicon-tag"></span> {{ jobDetail.jobname }}</h2>
           <form role="form">
             <div class="form-group">
               <label>课程名称</label>

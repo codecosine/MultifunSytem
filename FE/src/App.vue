@@ -26,7 +26,15 @@
         </ul>
       </div>
     </header>
-    <router-view></router-view>
+    <transition name="fade">
+      <div class="c-alert-box alert alert-info" role="alert" v-show="message.show">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>Warning!</strong> Better check yourself, you're not looking too good.
+      </div>
+    </transition>
+
+    <router-view>
+    </router-view>
     <footer class="bs-footer">
       <div class="container">
         <p>多功能学生信息管理系统</p>
@@ -42,11 +50,19 @@ export default {
   name: 'app',
   store,
   computed: {
+    message() {
+      return this.$store.getters.message;
+    },
     user() {
       return this.$store.getters.user;
     },
     token() {
       return this.$store.getters.token;
+    },
+  },
+  methods: {
+    close() {
+      this.$store.dispatch('closeMsg');
     },
   },
 };

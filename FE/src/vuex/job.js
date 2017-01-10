@@ -1,19 +1,28 @@
 import {
+  ADD_JOB_DETAILS,
   UPDATE_JOB_DETAILS,
   UPDATE_JOB,
 } from './mutation-types';
 
 const jobState = {
   jobDetails: [{
-    id: '100',
-    jobname: '数据库课程设计',
+    id: '001',
+    jobname: '数据库课程设计14信管2班',
     coursename: '数据库设计',
     courseclass: '14级信管2班',
     operator: '张沙清',
     requirements: '作业包含4个文件：1.数据库源文件 2.源代码 3.使用说明readMe 4.课程设计报告 ,请将4个文件打包成rar等压缩文件上交',
     deadTime: '2016-1-5',
   }, {
-    id: '123',
+    id: '002',
+    jobname: '商业数据分析',
+    coursename: '商业数据分析',
+    courseclass: '14级信管2班',
+    operator: '2',
+    requirements: '要求',
+    deadTime: '2016-1-5',
+  }, {
+    id: '003',
     jobname: '数据库课程设计',
     coursename: '数据库设计',
     courseclass: '14级信管2班',
@@ -21,15 +30,7 @@ const jobState = {
     requirements: '要求',
     deadTime: '2016-1-5',
   }, {
-    id: '123',
-    jobname: '数据库课程设计',
-    coursename: '数据库设计',
-    courseclass: '14级信管2班',
-    operator: '张沙清',
-    requirements: '要求',
-    deadTime: '2016-1-5',
-  }, {
-    id: '123',
+    id: '004',
     jobname: '数据库课程设计',
     coursename: '数据库设计',
     courseclass: '14级信管2班',
@@ -53,6 +54,9 @@ const jobState = {
 };
 /* eslint no-param-reassign: ["error", { "props": false }] */
 const mutations = {
+  [ADD_JOB_DETAILS](state, data) {
+    state.jobDetails.push(data);
+  },
   [UPDATE_JOB_DETAILS](state, data) {
     state.jobDetails = data;
   },
